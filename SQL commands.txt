@@ -69,3 +69,6 @@ add foreign key(order_id) references orders(order_id);
 
 alter table invoice
 add foreign key(order_id) references orders(order_id);
+
+alter table orders
+add order_desc varchar(100) not null;
