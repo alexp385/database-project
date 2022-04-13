@@ -1,0 +1,72 @@
+drop database project;
+
+create database project;
+use project;
+
+CREATE TABLE vendor (
+    vendor_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    vendor_name VARCHAR(25) NOT NULL
+);
+
+CREATE TABLE store (
+    store_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    store_name VARCHAR(25) NOT NULL
+);
+
+CREATE TABLE product (
+    product_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    vendor_id INT NOT NULL,
+    FOREIGN KEY (vendor_id)
+        REFERENCES vendor (vendor_id),
+    store_id INT NOT NULL,
+    FOREIGN KEY (store_id)
+        REFERENCES store (store_id),
+    product_name VARCHAR(25) NOT NULL,
+    product_desc VARCHAR(25) NOT NULL,
+    quantity_on_hand INT NOT NULL,
+    price FLOAT NOT NULL
+);
+
+
+
+CREATE TABLE customers (
+    customer_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    customer_fname VARCHAR(50) NOT NULL,
+    customer_lname VARCHAR(50) NOT NULL,
+    customer_email VARCHAR(50) NOT NULL,
+    home_phone VARCHAR(12) NOT NULL,
+    cell_number VARCHAR(12) NOT NULL
+);
+
+CREATE TABLE orders (
+    order_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    FOREIGN KEY (customer_id)
+        REFERENCES customers (customer_id),
+    product_id INT,
+    FOREIGN KEY (product_id)
+        REFERENCES product (product_id),
+	total_cost float ,
+    order_desc VARCHAR(144) NOT NULL
+);
+
+
+CREATE TABLE invoice (
+    invoice_num INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    FOREIGN KEY (order_id)
+        REFERENCES orders (order_id),
+    total_cost FLOAT,
+    date DATE NOT NULL,
+    time TIME NOT NULL
+);
+
+insert into project.vendor(vendor_id, vendor_name) values(1,"J&J"),(2, "Sysco Corporation");
+
+insert into project.store(store_id, store_name) values(1, "East Street");
+
+insert into project.product(product_id, vendor_id, store_id, product_name, product_desc, quantity_on_hand, price) values
+(1,1,1,"Apples", "Honey Crisp", 10, 3.49),(2,1,1,"Yogurt", "Strawberry", 4, 2.45),(3,2,1,"Pizza", "Frozen", 3, 8.99),(4,2,1,"Chicken", "Leg", 0, 6.79),(5,1,1, "Bananas", "Bunch", 1, 1.99);
+
+insert into project.customers(customer_id, customer_fname, customer_lname, customer_email, home_phone, cell_number)values(1, "John", "Doe", "john@doe.com", "555-555-1234","555-555-4321");
+
